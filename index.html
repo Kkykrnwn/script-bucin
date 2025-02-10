@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Halaman html untuk nabilaa</title>
+    <style>
+        /* Gaya umum */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://kkykrnwn.github.io/script-bucin/img/papayang1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Daftar */
+        section {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        /* Tombol Transparan */
+        .transparent-button {
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .transparent-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Dropdown Musik */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            min-width: 150px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown-content button {
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dropdown-content button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Judul -->
+    <header>
+        <h1>Selamat Datang di Halaman html Nabilaa</h1>
+    </header>
+
+    <!-- Pemutar Musik -->
+    <section>
+        <h2>Pilih Musik</h2>
+        <audio id="audioPlayer" controls>
+            <source id="audioSource" src="musik1.mp3" type="audio/mpeg">
+            yahh browser ayangg ngga mendukung pemutar audio ini.
+        </audio>
+        <br><br>
+
+        <div class="dropdown">
+            <button class="transparent-button">Pilih Musik ▼</button>
+            <div class="dropdown-content">
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/ANUGERAH TERINDAH.mp3')">anugerah terindah</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Bawa Dia Kembali.mp3')">bawa dia kembali</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Cintanya Aku.mp3')">cintanya aku</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Dia Masa Lalumu, Aku Masa Depanmu.mp3')">dia masa lalumu, aku masa depanmu</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Keras Kepala.mp3')">keras kepala</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Masih Hatiku.mp3')">masih hatiku</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Masing Masing.mp3')">masing masing</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Rumah Singgah.mp3')">rumah singgah</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Selamat (Selamat Tinggal) ft Audy.mp3')">selamat tinggal</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Sisa Rasa.mp3')">sisa rasa</button>
+                <button onclick="gantiMusik('https://kkykrnwn.github.io/script-bucin/mp3/Usai.mp3')">usai</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daftar dengan Tombol Transparan -->
+    <section>
+        <h2>Daftar File</h2>
+        <ul>
+            <li>
+                1 
+                <a href="https://www.w3schools.com/html/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                2
+                <a href="https://www.w3schools.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                3 
+                <a href="https://medium.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                4
+                <a href="https://www.youtube.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                5 
+                <a href="https://www.w3schools.com/html/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                6 
+                <a href="https://www.w3schools.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                7 
+                <a href="https://medium.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                8 
+                <a href="https://www.youtube.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                9 
+                <a href="https://www.w3schools.com/html/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                10
+                <a href="https://www.w3schools.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                11 
+                <a href="https://medium.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+            <li>
+                12 
+                <a href="https://www.youtube.com/" target="_blank">
+                    <button class="transparent-button">Kunjungi</button>
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Penutup -->
+    <footer>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-lg-12">
+
+          <p>Copyright © 2025 All Rights Reserved. 
+
+          
+
+          <br>Designed by <a title="Kikyy & Nabilaa" rel="sponsored" href="https://www.instagram.com/kky_krnwn331?igsh=MW9yZnF6YXY2YmsxZg==" target="_blank">Kikyy</a> & 
+          <a title="Kikyy & Nabilaa" rel="sponsored" href="https://www.instagram.com/nabilailtsaa?igsh=MXEwd29ueDNhNzcyaQ==" target="_blank">Nabilaa</a></p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+    <!-- Script JavaScript untuk Mengganti Musik -->
+    <script>
+        function gantiMusik(file) {
+            let audioPlayer = document.getElementById("audioPlayer");
+            let audioSource = document.getElementById("audioSource");
+            audioSource.src = file;
+            audioPlayer.load();
+            audioPlayer.play();
+        }
+
+        // Mencegah zoom menggunakan gesture pada perangkat mobile
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        // Mencegah zoom dengan kombinasi ctrl + scroll di desktop
+        document.addEventListener('wheel', function (e) {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Mencegah zoom menggunakan pinch-to-zoom pada perangkat mobile
+        document.addEventListener('touchmove', function (e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
