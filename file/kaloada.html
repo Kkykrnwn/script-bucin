@@ -1,0 +1,102 @@
+<html>
+<meta charset='UTF-8' />
+<meta content='width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5' name='viewport' />
+<meta content='IE=edge' http-equiv='X-UA-Compatible' />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+<script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
+<link href="https://kkykrnwn.github.io/script-bucin/css/kaloada.css" rel="stylesheet" type="text/css" />
+
+<head>
+    <title>Script HTML untuk ayangg nabilaa</title>
+</head>
+
+<body>
+
+    <audio src="https://feeldreams.github.io/vibescorona.mp3" id="linkmp3" class="sembunyi"></audio>
+
+    <div id="bgbelakang">
+        <img src="" id="wallpaper" />
+    </div>
+
+    <div class="overlay">
+        <div class="loading-message">Harap tunggu...</div>
+    </div>
+
+    <div id='Content'>
+
+        <p id="ket">Klik di bawah ya <3</p> <div>
+                <div id="loveIn" class="awalan">
+                    <svg class='line' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
+                        <g transform='translate(2.000000, 2.000000)'>
+                            
+                        </g>
+                    </svg>
+                    <label>buat ayangg nabilaaa</label>
+                </div>
+    </div>
+
+    <div><img id="fotosatu" src="" /><img id="fotodua" src="" /><img id="fototiga" src="" /><img id="fotoempat"
+            src="" /><img id="fotolima" src="" /><img id="fotoenam" src="" /><img id="fototujuh" src="" /></div>
+
+    <div>
+        <blockquote id='bq'>
+            <p id="kalimat"></p>
+            <p id="kalimatc"></p>
+        </blockquote>
+    </div>
+
+    <div id="contTom"><a id="By" class='button' onClick="sjawab()">Klik Ini</a></div>
+
+    </div>
+
+    <script src="https://kkykrnwn.github.io/script-bucin/js/kaloada.js"></script>
+
+    <script type="text/javascript">
+        Content.style = "display:none";
+        async function menuju() {
+            await swals.fire('Kirim pesan ke WhatsApp aku, ya!');
+            window.location = "https://wa.me/6285603209755?text=" + pesanwhatsapp;
+        }
+
+        async function jawab() {
+            var {
+                value: jawaban
+            } = await swals.fire({
+                title: 'Ketik Pesan ayang &#128073;&#128072;',
+                input: 'text',
+                allowOutsideClick: false,
+                showCancelButton: false,
+            });
+            if (jawaban && jawaban.length < 21) {
+                window.jawaban = jawaban;
+                pesanwhatsapp = jawaban;
+                finalakhir();
+            } else {
+                await swals.fire('Ups!', 'Jawaban tidak boleh kosong atau lebih dari 20 karakter, ya!');
+                jawab();
+            }
+        }
+
+        function pergantian() {
+            setTimeout(gantikata, 0900); //1
+            setTimeout(gantikata, 3300); //2
+            setTimeout(gantikata, 4800); //3
+            setTimeout(gantikata, 7500); //4
+            setTimeout(gantikata, 8400); //5
+        }
+
+        async function pertama() {
+            kata1 = "Kalo ada yang<br>deketin ayang 🫠";
+            kata2 = "Bilang ajaa..";
+            kata3 = "ayang udaa punya<br>aku, sambil di fak in🖕 ";
+            kata4 = "Titikk. 😡";
+            katangetik = "ngga pake koma 😋💗";
+
+            fotosatu.style = "display:inline-flex";
+            audio.play();
+            showDiv()
+        }
+    </script>
+</body>
+
+</html>
