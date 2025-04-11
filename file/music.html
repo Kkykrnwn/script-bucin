@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pemutar Musik Ayang</title>
+  <style>
+    :root {
+  --glow1: #ff0080;
+  --glow2: #ff8000;
+  --glow3: #00ffcc;
+  --glow4: #0080ff;
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  transition: background-color 0.3s, color 0.3s;
+  color: #fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+body.light {
+  background-color: #fff;
+  color: #000;
+}
+
+.music-container {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 16px;
+  background-color: inherit;
+  position: relative;
+  box-shadow: 0 0 25px var(--glow1);
+  animation: glowRGBBright 5s ease-in-out infinite;
+}
+
+@keyframes glowRGBBright {
+  0%   { box-shadow: 0 0 25px var(--glow1); }
+  25%  { box-shadow: 0 0 25px var(--glow2); }
+  50%  { box-shadow: 0 0 25px var(--glow3); }
+  75%  { box-shadow: 0 0 25px var(--glow4); }
+  100% { box-shadow: 0 0 25px var(--glow1); }
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.song-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.5s ease;
+}
+
+.cover-container {
+  margin: 20px auto;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  animation: glowRGBBright 5s ease-in-out infinite;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.rotate {
+  animation: rotate 7s linear infinite, glowRGBBright 6s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+#progress {
+  flex: 1;
+  margin: 0 10px;
+  cursor: pointer;
+  accent-color: var(--glow3);
+}
+
+.controls, .bottom-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.controls button, .bottom-controls button {
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.controls button:hover,
+.bottom-controls button:hover,
+#dropdown-toggle:hover {
+  transform: scale(1.1);
+  animation: glowRGBBright 3s ease-in-out infinite;
+}
+
+.playlist-dropdown {
+  margin-top: 20px;
+}
+
+#playlist {
+  list-style: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+  transition: max-height 0.4s ease;
+}
+
+#playlist.hidden {
+  max-height: 0;
+  overflow: hidden;
+}
+
+#playlist li {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#playlist li:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+#playlist li.playing {
+  font-weight: bold;
+  background-color: rgba(0, 128, 255, 0.15);
+  border-left: 4px solid dodgerblue;
+}
+
+.info-container {
+  position: relative;
+  margin-top: 10px;
+}
+
+.info-text {
+  position: relative;
+  display: block;
+  margin: 5px auto;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: #333;
+  color: #fff;
+  font-size: 12px;
+  animation: fadeOut 2.5s ease forwards;
+  width: fit-content;
+  opacity: 0;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 0; transform: translateY(10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* Scrollbar khusus di playlist */
+#playlist::-webkit-scrollbar {
+  width: 6px;
+}
+
+#playlist::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#playlist::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--glow1), var(--glow4));
+  border-radius: 3px;
+}
+
+#playlist::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--glow2), var(--glow3));
+}
+
+  </style>
+</head>
+<body>
+  <div class="music-container">
+    <div class="theme-toggle" id="theme-toggle">🌙</div>
+    <div id="song-title" class="song-title">Judul Lagu</div>
+    <div class="cover-container">
+      <img src="cover.jpg" id="cover" alt="Cover" class="cover" />
+    </div>
+    <div class="progress-info">
+      <span id="current-time">0:00</span>
+      <input type="range" id="progress" value="0" />
+      <span id="duration">0:00</span>
+    </div>
+    <div class="controls">
+      <button id="prev">⏮️</button>
+      <button id="play">▶️</button>
+      <button id="next">⏭️</button>
+    </div>
+    <div class="bottom-controls">
+      <button id="mode">🎶</button>
+    </div>
+    <div class="info-container" id="info-container"></div>
+    <div class="playlist-dropdown">
+      <button id="dropdown-toggle">Daftar Lagu ▼</button>
+      <ul id="playlist" class="hidden"></ul>
+    </div>
+  </div>
+
+  <audio id="audio"></audio>
+  <script>
+    const songs = [
+  {
+    name: "Anugerah Terindah",
+    artist: "Sheila On 7",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/ANUGERAH%20TERINDAH.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang1.jpg",
+  },
+  {
+    name: "Bawa Dia Kembali",
+    artist: "Feby Putri",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Bawa%20Dia%20Kembali.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang2.jpg",
+  },
+  {
+    name: "Cintanya Aku",
+    artist: "Tiara Andini",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Cintanya%20Aku.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang3.jpg",
+  },
+  {
+    name: "Dia Masa Lalumu, Aku Masa Depanmu",
+    artist: "Dinda Permata",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Dia%20Masa%20Lalumu,%20Aku%20Masa%20Depanmu.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang4.jpg",
+  },
+  {
+    name: "Keras Kepala",
+    artist: "Fiersa Besari",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Keras%20Kepala.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang5.jpg",
+  },
+  {
+    name: "Masih Hatiku",
+    artist: "Andmesh",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Masih%20Hatiku.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang6.jpg",
+  },
+  {
+    name: "Masing Masing",
+    artist: "Mahen",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Masing%20Masing.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang7.jpg",
+  },
+  {
+    name: "Rumah Singgah",
+    artist: "Fabio Asher",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Rumah%20Singgah.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang8.jpg",
+  },
+  {
+    name: "Selamat (Selamat Tinggal)",
+    artist: "Rizky Febian ft. Audy",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Selamat%20(Selamat%20Tinggal)%20ft%20Audy.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang9.jpg",
+  },
+  {
+    name: "Sisa Rasa",
+    artist: "Mahalini",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Sisa%20Rasa.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang10.jpg",
+  },
+  {
+    name: "Usai",
+    artist: "Tiara Andini",
+    src: "https://kkykrnwn.github.io/script-bucin/mp3/Usai.mp3",
+    cover: "https://kkykrnwn.github.io/script-bucin/img/papayang1.jpg",
+  },
+];
+
+    
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('play');
+    const nextBtn = document.getElementById('next');
+    const prevBtn = document.getElementById('prev');
+    const progress = document.getElementById('progress');
+    const cover = document.getElementById('cover');
+    const durationEl = document.getElementById('duration');
+    const currentTimeEl = document.getElementById('current-time');
+    const playlist = document.getElementById('playlist');
+    const dropdownToggle = document.getElementById('dropdown-toggle');
+    const themeToggle = document.getElementById('theme-toggle');
+    const modeBtn = document.getElementById('mode');
+    const infoContainer = document.getElementById('info-container');
+    const titleEl = document.getElementById('song-title');
+    let currentSong = 0;
+    let isPlaying = false;
+    let playMode = 0;
+    let repeatOncePlayed = false;
+
+    function loadSong(index) {
+      const song = songs[index];
+      audio.src = song.src;
+      cover.src = song.cover;
+      titleEl.textContent = song.name;
+      document.querySelectorAll('#playlist li').forEach((li, idx) => {
+        li.classList.toggle('playing', idx === index);
+      });
+    }
+
+    function playSong() {
+      audio.play();
+      isPlaying = true;
+      playBtn.textContent = '⏸️';
+      cover.classList.add('rotate');
+    }
+
+    function pauseSong() {
+      audio.pause();
+      isPlaying = false;
+      playBtn.textContent = '▶️';
+      cover.classList.remove('rotate');
+    }
+
+    function nextSong() {
+      if (playMode === 3) {
+        currentSong = Math.floor(Math.random() * songs.length);
+      } else {
+        currentSong = (currentSong + 1) % songs.length;
+      }
+      repeatOncePlayed = false;
+      loadSong(currentSong);
+      playSong();
+    }
+
+    function prevSong() {
+      currentSong = (currentSong - 1 + songs.length) % songs.length;
+      repeatOncePlayed = false;
+      loadSong(currentSong);
+      playSong();
+    }
+
+    playBtn.onclick = () => isPlaying ? pauseSong() : playSong();
+    nextBtn.onclick = nextSong;
+    prevBtn.onclick = prevSong;
+audio.onended = () => {
+  if (playMode === 1 && !repeatOncePlayed) {
+    repeatOncePlayed = true;
+    playSong(); // ulang sekali
+  } else if (playMode === 2 || playMode === 3) {
+    nextSong(); // repeat all atau shuffle
+  } else {
+    // playMode === 0 (Normal)
+    if (currentSong < songs.length - 1) {
+      nextSong(); // lanjut biasa
+    } else {
+      currentSong = 0; // balik ke lagu pertama
+      loadSong(currentSong);
+      playSong();
+    }
+  }
+};
+
+    progress.addEventListener('input', () => {
+      audio.currentTime = (progress.value / 100) * audio.duration;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progress.value = percent || 0;
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+      durationEl.textContent = formatTime(audio.duration);
+    });
+
+    function formatTime(time) {
+      const min = Math.floor(time / 60) || 0;
+      const sec = Math.floor(time % 60) || 0;
+      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
+
+    dropdownToggle.onclick = () => {
+      playlist.classList.toggle('hidden');
+    };
+
+    songs.forEach((song, index) => {
+      const li = document.createElement('li');
+      li.textContent = song.name;
+      li.onclick = () => {
+        currentSong = index;
+        repeatOncePlayed = false;
+        loadSong(currentSong);
+        playSong();
+        playlist.classList.add('hidden');
+      };
+      playlist.appendChild(li);
+    });
+
+    themeToggle.onclick = () => {
+      document.body.classList.toggle('light');
+      themeToggle.textContent = document.body.classList.contains('light') ? '🌞' : '🌙';
+    };
+
+    modeBtn.onclick = () => {
+      playMode = (playMode + 1) % 4;
+      repeatOncePlayed = false;
+      const modeText = ["Putar Normal", "Ulang Satu", "Ulang Semua", "Acak"];
+      showInfo(modeText[playMode]);
+    };
+
+    function showInfo(text) {
+      const info = document.createElement('div');
+      info.className = 'info-text';
+      info.textContent = text;
+      infoContainer.appendChild(info);
+      setTimeout(() => info.remove(), 2500);
+    }
+
+    loadSong(currentSong);
+    
+    document.addEventListener('keydown', function(e) {
+  const tag = e.target.tagName.toLowerCase();
+  if (tag === 'input' || tag === 'textarea') return;
+
+  switch (e.key.toLowerCase()) {
+    case ' ':
+      e.preventDefault();
+      playPauseSong();
+      break;
+    case 'arrowleft':
+      audio.currentTime = Math.max(0, audio.currentTime - 5);
+      break;
+    case 'arrowright':
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 5);
+      break;
+    case 'arrowup':
+      e.preventDefault();
+      audio.volume = Math.min(1, audio.volume + 0.1);
+      break;
+    case 'arrowdown':
+      e.preventDefault();
+      audio.volume = Math.max(0, audio.volume - 0.1);
+      break;
+    case 'n':
+      nextSong();
+      break;
+    case 'p':
+      prevSong();
+      break;
+    case 's':
+      toggleShuffle();
+      break;
+    case 'r':
+      toggleRepeat();
+      break;
+    case 't':
+      toggleTheme();
+      break;
+  }
+});
+
+  </script>
+</body>
+</html>
